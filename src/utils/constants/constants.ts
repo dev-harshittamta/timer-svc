@@ -25,6 +25,6 @@ export const enum  CHANNEL {
     EXPIRED = '__keyevent@0__:expired'
 }
 
-export const enum Topics {
-    TIMER = 'Timer.events'
+export class Topics {
+    static readonly TIMER: string = process.env.TIMER_TOPIC ||'timer.events'
 }

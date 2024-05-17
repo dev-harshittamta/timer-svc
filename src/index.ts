@@ -11,7 +11,7 @@ const app : Express = express();
 
 app.use(express.json());
 
-app.use('/api/timer/v', router);
+app.use('/api/timer/v1.0', router);
 
 app.listen(PORT, async () => {
     await RedisConnectionManager.connectClient();

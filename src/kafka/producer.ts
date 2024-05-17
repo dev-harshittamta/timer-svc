@@ -4,6 +4,7 @@ import { TimerEvent } from "./event";
 import { kafkaClient } from "./kafka";
 
 export class BaseProducer {
+
     private producer: Producer | undefined;
 
     constructor() {
@@ -17,17 +18,13 @@ export class BaseProducer {
         });
     }
 
-    connect(producer: Producer):void{
-        if(!this.producer){
-            this.producer = producer;
+    async sendMessage(event: TimerEvent): Promise<void> {
+        try{
+            log.info('Preparing to send event : '+ JSON.stringify(event));
+            this.producer = await kafkaClient.getProducer();
+            await this.producer?.send({topic: event.topic, messages: [ { value: JSON.stringify(event.data)}]});
+        }catch(e){
+            log.error('Error while sending kafka event :', e)
         }
     }
-
-    async sendMessage(key: string, event: TimerEvent): Promise<void> {
-        if(!this.producer){
-            this.connect(await kafkaClient.getProducer())
-        }
-        await this.producer?.send({topic: event.topic, messages: [ { key: key, value: JSON.stringify(event.data)}]});
-    }
-
 }

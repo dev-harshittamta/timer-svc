@@ -10,7 +10,8 @@ class KafkaClient {
             ? process.env.BOOTSTRAP_SERVER.split(',')
             : [];
 
-        log.info(brokers);
+
+        log.info('Brokers : ' + brokers);
         log.info(process.env.KAFKA_AUTH_TYPE)
         if (process.env.KAFKA_AUTH_TYPE == 'plain' || !process.env.KAFKA_AUTH_TYPE) {
             log.info(process.env.KAFKA_AUTH_TYPE)

@@ -31,15 +31,14 @@ export class RedisConnectionManager {
 
         expiredSub.on('message', async (channel: string, message: string) => {
           if(channel === CHANNEL.EXPIRED){
-            const messageData = message.split('_');
-            const key: string = messageData.pop() || 'ccId';
+            log.info('Received an event from redis with messageId : '+ message);
             const timerEvent : TimerEvent = {
               topic: Topics.TIMER,
               data: {
                 timerId: message
               }
             };
-            await new BaseProducer().sendMessage(key, timerEvent)
+            await new BaseProducer().sendMessage(timerEvent)
           }
         });
     }
